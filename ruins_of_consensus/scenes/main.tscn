@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://deubap8eclyve"]
+
+[ext_resource type="PackedScene" uid="uid://bd3a5e7b" path="res://scenes/robot.tscn" id="1_robot"]
+[ext_resource type="PackedScene" uid="uid://cgab2a1a" path="res://scenes/beacon.tscn" id="2_beacon"]
+[ext_resource type="PackedScene" uid="uid://abyss_uid_123" path="res://scenes/abyss.tscn" id="3_abyss"]
+
+[node name="Main" type="Node2D" unique_id=1612380412]
+
+[node name="Beacons" type="Node2D" parent="." unique_id=1975540815]
+
+[node name="Beacon1" parent="Beacons" unique_id=291191530 instance=ExtResource("2_beacon")]
+position = Vector2(800, 360)
+
+[node name="Beacon2" parent="Beacons" unique_id=1831794391 instance=ExtResource("2_beacon")]
+position = Vector2(200, 360)
+is_on = false
+
+[node name="Abysses" type="Node2D" parent="." unique_id=999999981]
+
+[node name="Abyss1" parent="Abysses" unique_id=999999982 instance=ExtResource("3_abyss")]
+position = Vector2(600, 360)
+
+[node name="Robots" type="Node2D" parent="." unique_id=383200744]
+
+[node name="Robot1" parent="Robots" unique_id=1400918068 instance=ExtResource("1_robot")]
+position = Vector2(400, 300)
+
+[node name="Robot2" parent="Robots" unique_id=419060754 instance=ExtResource("1_robot")]
+position = Vector2(450, 320)
+
+[node name="Robot3" parent="Robots" unique_id=832132515 instance=ExtResource("1_robot")]
+position = Vector2(380, 350)
+
+[node name="Robot4" parent="Robots" unique_id=2113240416 instance=ExtResource("1_robot")]
+position = Vector2(420, 280)
+
+[node name="Robot5" parent="Robots" unique_id=2031877961 instance=ExtResource("1_robot")]
+position = Vector2(410, 380)
+
+[node name="Robot6" parent="Robots" unique_id=795178990 instance=ExtResource("1_robot")]
+position = Vector2(360, 320)
+
+[node name="Robot7" parent="Robots" unique_id=653650355 instance=ExtResource("1_robot")]
+position = Vector2(460, 360)
+
+[node name="Robot8" parent="Robots" unique_id=71892902 instance=ExtResource("1_robot")]
+position = Vector2(500, 340)
+
+[node name="Robot9" parent="Robots" unique_id=1538027220 instance=ExtResource("1_robot")]
+position = Vector2(480, 290)
+
+[node name="Robot10" parent="Robots" unique_id=494872807 instance=ExtResource("1_robot")]
+position = Vector2(370, 280)

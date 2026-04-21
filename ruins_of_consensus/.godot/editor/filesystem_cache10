@@ -1,0 +1,11 @@
+63f7b34db8d8cdea90c76aacccf841ec
+::res://::1776782653
+icon.svg::CompressedTexture2D::6350901058342314708::1776782653::1776782668::1::::<><><>0<>0<>081cabd4b2dc0986d43ff40c274fa301<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
+::res://scenes/::1776782069
+beacon.tscn::PackedScene::114317925212::1776782053::0::1::::<><><>0<>0<><>::res://scripts/beacon.gd
+main.tscn::PackedScene::-1::1776782069::0::1::::<><><>0<>0<><>::uid://bd3a5e7b::::res://scenes/robot.tscn<>uid://cgab2a1a::::res://scenes/beacon.tscn
+robot.tscn::PackedScene::58431140097::1776782040::0::1::::<><><>0<>0<><>::res://scripts/robot.gd
+::res://scripts/::1776782321
+beacon.gd::GDScript::5082693382542883915::1776782025::0::1::::<>Node2D<><>0<>0<><>::
+game_params.gd::GDScript::6266190720633198950::1776782548::0::1::::<>Node<><>0<>0<><>::
+robot.gd::GDScript::8065354059781395022::1776782012::0::1::::<>CharacterBody2D<><>0<>0<><>::
