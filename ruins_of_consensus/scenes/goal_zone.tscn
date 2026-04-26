@@ -1,0 +1,4 @@
+[gd_scene load_steps=2 format=3 uid="uid://goal_zone_001"]
+[ext_resource type="Script" path="res://scripts/goal_zone.gd" id="1_goal"]
+[node name="GoalZone" type="Node2D" groups=["goals"]]
+script = ExtResource("1_goal")

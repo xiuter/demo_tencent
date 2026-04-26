@@ -1,11 +1,16 @@
 extends CharacterBody2D
 
+signal died
+
 var panic: float = 0.0
 var angle_history: Array[float] = []
 
 @onready var params = get_node("/root/GameParams")
 
+
 func _ready():
+	add_to_group("robots")
+	print("[Robot] Spawned at ", global_position)
 	velocity = Vector2.RIGHT.rotated(randf() * TAU) * 50.0
 
 func _physics_process(delta):
@@ -14,21 +19,29 @@ func _physics_process(delta):
 		if angle_history.size() > 0:
 			var delta_angle = wrapf(current_angle - angle_history[-1], -PI, PI)
 			var angular_vel = delta_angle / delta
-			if abs(angular_vel) > params.panic_angular_threshold:
+			if abs(angular_vel) > params.panic_angular_threshold and panic < 0.5:
 				panic += params.panic_angular_gain * delta
 		angle_history.push_back(current_angle)
 		if angle_history.size() > 5:
 			angle_history.pop_front()
 	
-	# 深渊触发: GDD DIST < 1.5 (映射为 abyss_distance)
+	# 深渊双圈检测
 	var abysses = get_tree().get_nodes_in_group("abyss")
 	for abyss in abysses:
-		if global_position.distance_to(abyss.global_position) < params.abyss_distance:
-			panic += params.abyss_fear_gain * delta
-			break
+		var dist = global_position.distance_to(abyss.global_position)
+		# 内圈：小球中心进入 → 吞噬死亡
+		if dist < abyss.inner_radius:
+			died.emit()
+			queue_free()
+			return
+		# 外圈：小球边缘碰到 → 瞬间恐慌
+		if dist - params.robot_radius < abyss.outer_radius:
+			panic = 1.0
 			
 	panic -= params.panic_decay * delta
 	panic = clamp(panic, 0.0, 1.0)
+	
+	# 视觉效果已移至 _draw()
 	
 	# 单次循环处理：排斥、对齐、感染
 	var forces = process_neighbors(delta)
@@ -67,9 +80,9 @@ func process_neighbors(delta) -> Dictionary:
 		if r == self: continue
 		var dist = global_position.distance_to(r.global_position)
 		
-		# 1. 恐慌传播逻辑 (只要邻居 panic >= 0.5 就会尝试感染)
+		# 1. 恐慌传播逻辑
 		if dist < params.panic_spread_radius * params.robot_radius:
-			if r.panic >= 0.5:
+			if r.panic >= 0.5 and panic < 0.5:
 				panic += params.panic_spread_intensity * delta
 				panic = min(1.0, panic)
 				
@@ -80,7 +93,7 @@ func process_neighbors(delta) -> Dictionary:
 			var strength = 1.0 - (dist / sep_dist)
 			separation += push_dir * strength * 2.0 
 			
-		# 3. 对齐逻辑 (仅非恐慌状态参与计算)
+		# 3. 对齐逻辑
 		if panic < 0.5:
 			if dist < 100.0:
 				alignment += r.velocity
@@ -121,7 +134,24 @@ func get_light_force() -> Vector2:
 	return Vector2.ZERO
 
 func _draw():
-	# 从黄色(平静)过渡到红色(恐慌)
-	var color = Color.YELLOW.lerp(Color.RED, panic)
-	draw_circle(Vector2.ZERO, params.robot_radius, color)
-	draw_line(Vector2.ZERO, velocity.normalized() * (params.robot_radius * 1.5), Color.BLACK, 2.0)
+	# 绘制机器人主体
+	var normal_color = Color(1.0, 0.85, 0.2) # 黄色
+	var panic_color = Color(1.0, 0.2, 0.1) # 红色
+	var body_color = normal_color.lerp(panic_color, panic)
+	
+	if panic >= 0.5:
+		# 恐慌状态：红色实心
+		draw_circle(Vector2.ZERO, params.robot_radius, body_color)
+	else:
+		# 正常状态：黄色实心 + 灰色描边
+		draw_circle(Vector2.ZERO, params.robot_radius, body_color)
+		draw_arc(Vector2.ZERO, params.robot_radius, 0, TAU, 32, Color(0.3, 0.3, 0.3, 0.8), 1.0)
+	
+	# 绘制朝向小箭头
+	if velocity.length() > 5.0:
+		var dir = velocity.normalized()
+		var tip = dir * (params.robot_radius + 6)
+		var side1 = dir.rotated(0.4) * (params.robot_radius - 2)
+		var side2 = dir.rotated(-0.4) * (params.robot_radius - 2)
+		var arrow_color = Color.WHITE
+		draw_polyline([side1, tip, side2], arrow_color, 2.0, true)

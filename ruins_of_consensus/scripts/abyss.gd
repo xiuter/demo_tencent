@@ -1,8 +1,21 @@
 extends Node2D
 
-@export var radius: float = 100.0
+@export var inner_radius: float = 50.0  # 黑色吞噬圈 - 小球中心进入即死
+@export var outer_radius: float = 100.0 # 暗红恐慌圈 - 小球边缘碰到即恐慌
+
+
+
+func _ready():
+	add_to_group("abysses")
+
+func _process(_delta):
+	queue_redraw()
 
 func _draw():
-	# 绘制深坑视觉效果 (黑红色)
-	draw_circle(Vector2.ZERO, radius, Color(0.3, 0.0, 0.0, 0.5))
-	draw_circle(Vector2.ZERO, radius * 0.5, Color(0.05, 0.0, 0.0, 1.0))
+	# 外圈：恐慌预警区
+	draw_circle(Vector2.ZERO, outer_radius, Color(0.3, 0.0, 0.0, 0.2))
+	draw_arc(Vector2.ZERO, outer_radius, 0, TAU, 64, Color(0.6, 0.1, 0.0, 0.4), 2.0)
+	
+	# 内圈：黑色吞噬核心
+	draw_circle(Vector2.ZERO, inner_radius, Color(0.05, 0.05, 0.05, 1.0))
+	draw_arc(Vector2.ZERO, inner_radius, 0, TAU, 64, Color(0.4, 0.1, 0.0, 0.8), 4.0)

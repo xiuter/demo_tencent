@@ -1,53 +1,119 @@
-[gd_scene format=3 uid="uid://deubap8eclyve"]
+[gd_scene load_steps=5 format=3 uid="uid://deubap8eclyve"]
 
-[ext_resource type="PackedScene" uid="uid://bd3a5e7b" path="res://scenes/robot.tscn" id="1_robot"]
-[ext_resource type="PackedScene" uid="uid://cgab2a1a" path="res://scenes/beacon.tscn" id="2_beacon"]
-[ext_resource type="PackedScene" uid="uid://abyss_uid_123" path="res://scenes/abyss.tscn" id="3_abyss"]
+[ext_resource type="Script" path="res://scripts/main.gd" id="0_main"]
+[ext_resource type="Script" path="res://scripts/level_manager.gd" id="1_lm"]
+[ext_resource type="Script" path="res://scripts/level_editor.gd" id="2_le"]
+[ext_resource type="Script" path="res://scripts/hud.gd" id="3_hud"]
 
-[node name="Main" type="Node2D" unique_id=1612380412]
+[node name="Main" type="Node2D"]
+script = ExtResource("0_main")
 
-[node name="Beacons" type="Node2D" parent="." unique_id=1975540815]
+[node name="Background" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1280.0
+offset_bottom = 720.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.12, 0.12, 0.14, 1)
 
-[node name="Beacon1" parent="Beacons" unique_id=291191530 instance=ExtResource("2_beacon")]
-position = Vector2(800, 360)
+[node name="Beacons" type="Node2D" parent="."]
 
-[node name="Beacon2" parent="Beacons" unique_id=1831794391 instance=ExtResource("2_beacon")]
-position = Vector2(200, 360)
-is_on = false
+[node name="Abysses" type="Node2D" parent="."]
 
-[node name="Abysses" type="Node2D" parent="." unique_id=999999981]
+[node name="Goals" type="Node2D" parent="."]
 
-[node name="Abyss1" parent="Abysses" unique_id=999999982 instance=ExtResource("3_abyss")]
-position = Vector2(600, 360)
+[node name="Robots" type="Node2D" parent="."]
 
-[node name="Robots" type="Node2D" parent="." unique_id=383200744]
+[node name="LevelManager" type="Node" parent="."]
+script = ExtResource("1_lm")
 
-[node name="Robot1" parent="Robots" unique_id=1400918068 instance=ExtResource("1_robot")]
-position = Vector2(400, 300)
+[node name="HUD" type="CanvasLayer" parent="."]
+script = ExtResource("3_hud")
 
-[node name="Robot2" parent="Robots" unique_id=419060754 instance=ExtResource("1_robot")]
-position = Vector2(450, 320)
+[node name="EditorLayer" type="CanvasLayer" parent="."]
+layer = 10
 
-[node name="Robot3" parent="Robots" unique_id=832132515 instance=ExtResource("1_robot")]
-position = Vector2(380, 350)
+[node name="LevelEditor" type="Control" parent="EditorLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("2_le")
 
-[node name="Robot4" parent="Robots" unique_id=2113240416 instance=ExtResource("1_robot")]
-position = Vector2(420, 280)
+[node name="EditorUI" type="VBoxContainer" parent="EditorLayer/LevelEditor"]
+visible = false
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -200.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 2
 
-[node name="Robot5" parent="Robots" unique_id=2031877961 instance=ExtResource("1_robot")]
-position = Vector2(410, 380)
+[node name="PropsPanel" type="VBoxContainer" parent="EditorLayer/LevelEditor/EditorUI"]
+layout_mode = 2
 
-[node name="Robot6" parent="Robots" unique_id=795178990 instance=ExtResource("1_robot")]
-position = Vector2(360, 320)
+[node name="ToolbarPanel" type="PanelContainer" parent="EditorLayer/LevelEditor/EditorUI"]
+layout_mode = 2
 
-[node name="Robot7" parent="Robots" unique_id=653650355 instance=ExtResource("1_robot")]
-position = Vector2(460, 360)
+[node name="Toolbar" type="HBoxContainer" parent="EditorLayer/LevelEditor/EditorUI/ToolbarPanel"]
+layout_mode = 2
 
-[node name="Robot8" parent="Robots" unique_id=71892902 instance=ExtResource("1_robot")]
-position = Vector2(500, 340)
+[node name="Label" type="Label" parent="EditorLayer/LevelEditor/EditorUI/ToolbarPanel/Toolbar"]
+layout_mode = 2
+text = " EDITOR MODE | "
 
-[node name="Robot9" parent="Robots" unique_id=1538027220 instance=ExtResource("1_robot")]
-position = Vector2(480, 290)
+[node name="RobotBtn" type="Button" parent="EditorLayer/LevelEditor/EditorUI/ToolbarPanel/Toolbar"]
+layout_mode = 2
+text = "ROBOT"
 
-[node name="Robot10" parent="Robots" unique_id=494872807 instance=ExtResource("1_robot")]
-position = Vector2(370, 280)
+[node name="BeaconBtn" type="Button" parent="EditorLayer/LevelEditor/EditorUI/ToolbarPanel/Toolbar"]
+layout_mode = 2
+text = "BEACON"
+
+[node name="AbyssBtn" type="Button" parent="EditorLayer/LevelEditor/EditorUI/ToolbarPanel/Toolbar"]
+layout_mode = 2
+text = "ABYSS"
+
+[node name="GoalBtn" type="Button" parent="EditorLayer/LevelEditor/EditorUI/ToolbarPanel/Toolbar"]
+layout_mode = 2
+text = "GOAL"
+
+[node name="Sep" type="VSeparator" parent="EditorLayer/LevelEditor/EditorUI/ToolbarPanel/Toolbar"]
+layout_mode = 2
+
+[node name="ReqLabel" type="Label" parent="EditorLayer/LevelEditor/EditorUI/ToolbarPanel/Toolbar"]
+layout_mode = 2
+text = "REQ:"
+
+[node name="RequiredInput" type="SpinBox" parent="EditorLayer/LevelEditor/EditorUI/ToolbarPanel/Toolbar"]
+layout_mode = 2
+min_value = 1.0
+max_value = 50.0
+value = 5.0
+
+[node name="Sep2" type="VSeparator" parent="EditorLayer/LevelEditor/EditorUI/ToolbarPanel/Toolbar"]
+layout_mode = 2
+
+[node name="SaveBtn" type="Button" parent="EditorLayer/LevelEditor/EditorUI/ToolbarPanel/Toolbar"]
+layout_mode = 2
+text = "SAVE"
+
+[node name="LoadBtn" type="Button" parent="EditorLayer/LevelEditor/EditorUI/ToolbarPanel/Toolbar"]
+layout_mode = 2
+text = "LOAD"
+
+[connection signal="pressed" from="EditorLayer/LevelEditor/EditorUI/ToolbarPanel/Toolbar/RobotBtn" to="EditorLayer/LevelEditor" method="_on_robot_btn_pressed"]
+[connection signal="pressed" from="EditorLayer/LevelEditor/EditorUI/ToolbarPanel/Toolbar/BeaconBtn" to="EditorLayer/LevelEditor" method="_on_beacon_btn_pressed"]
+[connection signal="pressed" from="EditorLayer/LevelEditor/EditorUI/ToolbarPanel/Toolbar/AbyssBtn" to="EditorLayer/LevelEditor" method="_on_abyss_btn_pressed"]
+[connection signal="pressed" from="EditorLayer/LevelEditor/EditorUI/ToolbarPanel/Toolbar/GoalBtn" to="EditorLayer/LevelEditor" method="_on_goal_btn_pressed"]
+[connection signal="pressed" from="EditorLayer/LevelEditor/EditorUI/ToolbarPanel/Toolbar/SaveBtn" to="EditorLayer/LevelEditor" method="_on_save_btn_pressed"]
+[connection signal="pressed" from="EditorLayer/LevelEditor/EditorUI/ToolbarPanel/Toolbar/LoadBtn" to="EditorLayer/LevelEditor" method="_on_load_btn_pressed"]
+[connection signal="value_changed" from="EditorLayer/LevelEditor/EditorUI/ToolbarPanel/Toolbar/RequiredInput" to="EditorLayer/LevelEditor" method="_on_required_input_value_changed"]

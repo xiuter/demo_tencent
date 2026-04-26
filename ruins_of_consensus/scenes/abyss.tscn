@@ -1,6 +1,4 @@
 [gd_scene load_steps=2 format=3 uid="uid://abyss_uid_123"]
-
 [ext_resource type="Script" path="res://scripts/abyss.gd" id="1_abyss"]
-
 [node name="Abyss" type="Node2D" groups=["abyss"]]
 script = ExtResource("1_abyss")
